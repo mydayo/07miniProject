@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PurchaseMapper">
+ 	
+ 	
+	<resultMap id="purchaseSelectMap" type="purchase">
+		<result property="tranNo" 				column="tran_no" 			jdbcType="NUMERIC"/>
+		<result property="purchaseProd.prodNo"				column="prod_no" 			jdbcType="NUMERIC" />
+		<result property="buyer.userId" 			column="buyer_id" 		jdbcType="VARCHAR" />
+		<result property="paymentOption" 			column="payment_option" 	jdbcType="VARCHAR" />
+		<result property="receiverName" 				column="receiver_name" 				jdbcType="VARCHAR" />
+		<result property="receiverPhone" 			column="receiver_phone" 		jdbcType="VARCHAR" />
+		<result property="divyAddr" 				column="dlvy_addr" 			jdbcType="VARCHAR" />
+		<result property="divyRequest" 			column="dlvy_request" 	jdbcType="VARCHAR" />
+		<result property="tranCode" 			column="tran_status_code" 	jdbcType="VARCHAR" />
+		<result property="orderDate" 			column="order_date" 	jdbcType="DATE" />
+		<result property="divyDate" 			column="dlvy_date" 	jdbcType="DATE" />		
+	</resultMap>
+	
+	<!-- SQL : INSERT -->
+	
+	<!--  tranNo -->
+	<select id="getPurchase" resultMap="purchaseSelectMap" parameterType="int"> 
+	SELECT tran_no,prod_no, buyer_id, payment_option, receiver_name, receiver_phone, dlvy_addr
+	dlvy_request, dlvy_date, order_date, tran_status_code
+	FROM transaction 
+	WHERE tran_no = #{tranNo} 
+	</select>
+	
+	<!--  prodNo -->
+	<select id="getPurchase2" resultMap="purchaseSelectMap" parameterType="int"> 
+	SELECT tran_no,prod_no, buyer_id, payment_option, receiver_name, receiver_phone, dlvy_addr
+	dlvy_request, dlvy_date, order_date, tran_status_code
+	FROM transaction 
+	WHERE prod_no = #{prodNo} 
+	</select>
+	
+	<!--  List -->
+	<select  id="getPurchaseList"  parameterType="map"	resultMap="purchaseSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM AS row_seq
+	  					FROM		(SELECT 
+	  								tran_no ,
+	  								prod_no ,
+	  								buyer_id ,
+	  								payment_option AS paymentOption,
+	  								receiver_name AS receiverName,
+	  								receiver_phone AS receiverPhone,
+	  								dlvy_addr AS divyAddr,
+									dlvy_request AS divyRequest,
+									dlvy_date AS divyDate,
+									order_date AS orderDate,
+									tran_status_code AS tranCode
+									FROM transaction 
+									WHERE buyer_id = #{buyerId}
+									ORDER BY tran_status_code ASC				
+									) inner_table
+						WHERE ROWNUM &lt;= #{search.endRowNum} )
+		WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
+	 </select>
+	
+	
+	<!--  insert -->
+	<insert id="addPurchase" parameterType="purchase"> 
+	INSERT INTO transaction
+ 	VALUES ( seq_transaction_tran_no.NEXTVAL, #{purchaseProd.prodNo:INTEGER},
+  			#{buyer.userId:VARCHAR}, #{paymentOption:VARCHAR}, #{receiverName:VARCHAR}, 
+  			#{receiverPhone:VARCHAR}, #{divyAddr:VARCHAR}, #{divyRequest:VARCHAR},
+   			#{tranCode:VARCHAR}, SYSDATE, #{divyDate:DATE} ) 
+  	 </insert>
+	 
+	 
+	 <!--  update -->
+	 <update	id="updatePurchase"	parameterType="purchase" >
+	   	UPDATE transaction
+	   	<set>
+	   		payment_option 	= #{paymentOption:VARCHAR},
+			receiver_name	= #{receiverName:VARCHAR},
+			receiver_phone = #{receiverPhone:VARCHAR},
+			dlvy_addr	=	#{divyAddr:VARCHAR},
+			dlvy_request	=	#{divyRequest:VARCHAR},
+			dlvy_date = #{divyDate:DATE}			
+	   	</set>
+	   	WHERE tran_no = #{tranNo}
+	 </update>
+		  
+		
+	<!--  updateTranCode -->
+	<update id = "updateTranCode" parameterType = "purchase">
+		UPDATE transaction
+	   	<set>
+	   		tran_status_code = #{tranCode:VARCHAR} 
+	   	</set>
+	   	WHERE tran_no = #{tranNo}
+	</update>
+	
+	
+	<!--  getTotalCount -->
+	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM(	SELECT
+				tran_no,prod_no, buyer_id, payment_option, receiver_name, receiver_phone, dlvy_addr
+				dlvy_request, dlvy_date, order_date, tran_status_code, tran_no 
+				FROM transaction 
+				) countTable						
+	 </select>
+
+</mapper>
