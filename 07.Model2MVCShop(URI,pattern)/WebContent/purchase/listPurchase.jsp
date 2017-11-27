@@ -28,7 +28,7 @@ function fncGetList(currentPage) {
 
 <div style="width: 98%; margin-left: 10px;">
 
-<form name="detailForm" action="/listPurchase.do?menu=${menu}" method="post">
+<form name="detailForm" action="/purchase/listPurchase?menu=${menu}" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -73,11 +73,11 @@ function fncGetList(currentPage) {
 	
 	<tr class="ct_list_pop">
 		<td align="center">
-			<a href="/getPurchase.do?tranNo=${purchase.tranNo}">${purchase.tranNo}</a>
+			<a href="/purchase/getPurchase?tranNo=${purchase.tranNo}">${purchase.tranNo}</a>
 		</td>
 		<td></td>
 		<td align="left">
-			<a href="/getUser.do?userId=${purchase.buyer.userId}">${purchase.purchaseProd.prodName}</a>
+			<a href="/user/getUser?userId=${purchase.buyer.userId}">${purchase.purchaseProd.prodName}</a>
 		</td>
 		<td></td>
 		<td align="left">${purchase.receiverName}</td>
@@ -104,7 +104,7 @@ function fncGetList(currentPage) {
 		
 		
 		<c:if test= "${purchase.tranCode.trim().equals('02')}">
-		<a href="/updateTranCode.do?prodNo=${purchase.purchaseProd.prodNo}&proTranCode=${purchase.tranCode.trim()}
+		<a href="/purchase/updateTranCode?prodNo=${purchase.purchaseProd.prodNo}&proTranCode=${purchase.tranCode.trim()}
 									&menu=${requestScope.menu}&search=${search}">¹°Ç°µµÂø</a>
 		</c:if>
 		

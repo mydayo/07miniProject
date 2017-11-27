@@ -24,7 +24,7 @@ function fncGetList(currentPage) {
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/listProduct.do?menu=${menu}" method="post">
+<form name="detailForm" action="/product/listProduct?menu=${menu}" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -92,19 +92,19 @@ function fncGetList(currentPage) {
 		<td colspan="03" align = "right">
 		<!-- 가격정렬 -------------------------------------------------------------------------------------------------------- -->
 		<c:if test = "${menu == 'search'}">
-		■<a href="/listProduct.do?prodNo=${product.prodNo}&menu=search&priceList=DESC"> 가격 높은 순 </a>
+		■<a href="/product/listProduct?prodNo=${product.prodNo}&menu=search&priceList=DESC"> 가격 높은 순 </a>
 		</c:if>
 		
 		<c:if test = "${menu == 'search'}">
-		■<a href="/listProduct.do?prodNo=${product.prodNo}&menu=search&priceList=ASC"> 가격 낮은 순 </a>
+		■<a href="/product/listProduct?prodNo=${product.prodNo}&menu=search&priceList=ASC"> 가격 낮은 순 </a>
 		</c:if>
 		
 		<c:if test = "${menu == 'manage'}">
-		■<a href="/listProduct.do?prodNo=${product.prodNo}&menu=manage&priceList=DESC"> 가격 높은 순 </a>
+		■<a href="/product/listProduct?prodNo=${product.prodNo}&menu=manage&priceList=DESC"> 가격 높은 순 </a>
 		</c:if>
 		
 		<c:if test = "${menu == 'manage'}">
-		■<a href="/listProduct.do?prodNo=${product.prodNo}&menu=manage&priceList=ASC"> 가격 낮은 순 </a>
+		■<a href="/product/listProduct?prodNo=${product.prodNo}&menu=manage&priceList=ASC"> 가격 낮은 순 </a>
 		</c:if>
 		
 		<!-- -------------------------------------------------------------------------------------------------------- -->
@@ -156,11 +156,11 @@ function fncGetList(currentPage) {
 			<c:if test = "${empty product.proTranCode}">
 				
 			 	<c:if test = "${menu == 'search'}">
-					 <a href="/getProduct.do?prodNo=${product.prodNo}&menu=search">${product.prodName}</a>
+					 <a href="/product/getProduct?prodNo=${product.prodNo}&menu=search">${product.prodName}</a>
 				 </c:if>
 				 
 			 	<c:if test = "${menu == 'manage'}">
-				 	 <a href="/updateProductView.do?prodNo=${product.prodNo}&menu=manage">${product.prodName}</a>
+				 	 <a href="/product/updateProductView?prodNo=${product.prodNo}&menu=manage">${product.prodName}</a>
 				 </c:if>
 				 
 			</c:if>
@@ -226,7 +226,7 @@ function fncGetList(currentPage) {
 				  <c:if test = "${product.proTranCode.trim() == '01' }">	
 					<c:if test = "${! empty product.proTranCode}">
 					
-						구매완료  <a href="/updateTranCode.do?prodNo=${product.prodNo}&proTranCode=${product.proTranCode.trim()}
+						구매완료  <a href="/purchase/updateTranCode?prodNo=${product.prodNo}&proTranCode=${product.proTranCode.trim()}
 																&search=${search}&menu=manage">배송하기</a>
 					</c:if>
 				  </c:if>

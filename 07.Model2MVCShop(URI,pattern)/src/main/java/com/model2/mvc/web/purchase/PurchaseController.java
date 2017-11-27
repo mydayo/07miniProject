@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model2.mvc.common.Page;
@@ -28,7 +29,8 @@ import com.model2.mvc.service.user.UserService;
 
 
 //==> 회원관리 Controller
-//@Controller
+@Controller
+@RequestMapping("/purchase/*")
 public class PurchaseController {
 	
 	///Field
@@ -60,7 +62,7 @@ public class PurchaseController {
 	int pageSize;
 	
 	
-	@RequestMapping("/addPurchaseView.do")
+	@RequestMapping(value = "addPurchaseView",method=RequestMethod.GET)
 	public String addPurchaseView(@RequestParam("prodNo") int prodNo,Model model,
 			HttpServletRequest request,HttpSession session) throws Exception {
 
@@ -77,7 +79,7 @@ public class PurchaseController {
 	}
 	
 
-	@RequestMapping("/addPurchase.do")
+	@RequestMapping(value="addPurchase",method=RequestMethod.POST)
 	public String addPurchase( @ModelAttribute("purchase") Purchase purchase,
 									@RequestParam(value="buyerId",required=false) String  buyerId ,
 									@RequestParam("prodNo") int prodNo, Model model) throws Exception {
@@ -93,7 +95,7 @@ public class PurchaseController {
 		return "forward:/purchase/addPurchase.jsp";
 	}
 	
-	@RequestMapping("/getPurchase.do")
+	@RequestMapping(value="getPurchase",method=RequestMethod.GET)
 	public String getPurchase( @RequestParam("tranNo") int tranNo , Model model  ) throws Exception {
 		
 		System.out.println("/getPurchase.do");
@@ -105,7 +107,7 @@ public class PurchaseController {
 		return "forward:/purchase/getPurchase.jsp";
 	}
 	
-	@RequestMapping("/listPurchase.do")
+	@RequestMapping(value="listPurchase")
 	public String listPurchase(@ModelAttribute(value="search") Search search, 
 								Model model, HttpServletRequest request,HttpSession session) throws Exception {
 
@@ -137,7 +139,7 @@ public class PurchaseController {
 	
 	
 	
-	@RequestMapping("/updatePurchaseView.do")
+	@RequestMapping(value="/purchase/updatePurchaseView",method=RequestMethod.GET)
 	public String updatePurchaseView( @RequestParam("tranNo") int tranNo , Model model ) throws Exception{
 
 		System.out.println("/updatePurchaseView.do 진입하였습니다.");
@@ -150,7 +152,7 @@ public class PurchaseController {
 		return "forward:/purchase/updatePurchaseView.jsp";
 	}
 	
-	@RequestMapping("/updatePurchase.do")
+	@RequestMapping(value="/purchase/updatePurchase")
 	public String updatePurchase( @ModelAttribute("purchase") Purchase purchase,
 			@RequestParam("tranNo") int tranNo, 
 			Model model ) throws Exception{
@@ -168,7 +170,7 @@ public class PurchaseController {
 		return "forward:/purchase/updatePurchase.jsp";
 	}
 	
-	@RequestMapping("/updateTranCode.do")
+	@RequestMapping(value="/purchase/updateTranCode")
 	public String updateTranCode(
 			@RequestParam("prodNo") int prodNo,
 			@RequestParam("proTranCode") String proTranCode, 
@@ -206,9 +208,9 @@ public class PurchaseController {
 		}
 		
 		if(proTranCode.equals("02")) {
-			return "forward:/listPurchase.do";
+			return "forward:/purchase/listPurchase";
 		}
-		return "forward:/listProduct.do";
+		return "forward:/product/listProduct";
 	}
 }
 	

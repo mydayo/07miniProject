@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.model2.mvc.common.Page;
@@ -23,7 +24,8 @@ import com.model2.mvc.service.product.ProductService;
 
 //==> 회원관리 Controller
 
-//@Controller
+@Controller
+@RequestMapping("/product/*")
 public class ProductController {
 
 	/// Field
@@ -36,18 +38,16 @@ public class ProductController {
 		System.out.println(this.getClass());
 	}
 
-	// ==> classpath:config/common.properties , classpath:config/commonservice.xml
-	// 참조 할것
-	// ==> 아래의 두개를 주석을 풀어 의미를 확인 할것
 	@Value("#{commonProperties['pageUnit']}")
-	// @Value("#{commonProperties['pageUnit'] ?: 3}")
+
 	int pageUnit;
 
 	@Value("#{commonProperties['pageSize']}")
-	// @Value("#{commonProperties['pageSize'] ?: 2}")
-	int pageSize;
 
-	@RequestMapping("/addProduct.do")
+	int pageSize;
+	
+	
+	@RequestMapping(value="addProduct",method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") Product product) throws Exception {
 
 		System.out.println("/addProduct.do 메소드 시작" + product);
@@ -58,7 +58,7 @@ public class ProductController {
 		return "forward:/product/addProduct.jsp";
 	}
 
-	@RequestMapping("/listProduct.do")
+	@RequestMapping(value="listProduct")
 	public String listProduct(@ModelAttribute("search") Search search, @ModelAttribute("priceList") String priceList,
 																		Model model, HttpServletRequest request) throws Exception {
 
@@ -91,8 +91,8 @@ public class ProductController {
 	}
 
 	
-	 @RequestMapping("/getProduct.do") 
-	 public String getUser( @RequestParam("prodNo") int prodNo , Model model, HttpServletRequest request,HttpServletResponse response ) throws Exception {
+	 @RequestMapping(value="getProduct",method=RequestMethod.GET)
+	 public String getProduct( @RequestParam("prodNo") int prodNo , Model model, HttpServletRequest request,HttpServletResponse response ) throws Exception {
 	 
 	 System.out.println("/getProduct.do 메소드에 진입하였습니다. "); 
 	 
@@ -123,8 +123,8 @@ public class ProductController {
 		return "forward:/product/getProduct.jsp";
 		}
 	 
-	 @RequestMapping("/updateProductView.do")
-		public String updateUserView( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
+	 @RequestMapping(value="updateProductView",method=RequestMethod.GET)
+		public String updateProductView( @RequestParam("prodNo") int prodNo , Model model ) throws Exception{
 
 		 System.out.println("/updateProductView.do 메소드에 진입하였습니다. "); 
 		 
@@ -137,8 +137,8 @@ public class ProductController {
 			return "forward:/product/updateProductView.jsp";
 		}
 		
-		@RequestMapping("/updateProduct.do")
-		public String updateUser( @ModelAttribute("product") Product product , Model model ) throws Exception{
+	 @RequestMapping(value="updateProduct",method=RequestMethod.GET)
+		public String updateProduct( @ModelAttribute("product") Product product , Model model ) throws Exception{
 
 			System.out.println("/updateProduct.do에 진입하였습니다.");
 			

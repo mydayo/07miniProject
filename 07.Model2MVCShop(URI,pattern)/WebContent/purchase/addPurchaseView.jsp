@@ -31,7 +31,7 @@ function fncAddPurchase() {
 
 
 
-<form name="addPurchase" method="post" action="/addPurchase.do">
+<form name="addPurchase" method="post" action="/purchase/addPurchase">
 
 <input type="hidden" name="prodNo" value="${product.prodNo}"/>
 <input type="hidden" name="tranCode" value = "01"/>
